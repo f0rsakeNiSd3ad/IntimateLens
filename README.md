@@ -1,275 +1,127 @@
 # IntimacyLens - Relationship Health Analysis
 
-A local-first, privacy-focused web application that analyzes relationship health using locally hosted AI models.
+A local-first, privacy-focused application that analyzes relationship dynamics and communication health using on-device psychological frameworks (Gottman Method, Attachment Theory) and deterministic NLP telemetry.
 
-## Overview
+---
 
-IntimacyLens allows users to upload text exports of their conversations (WhatsApp, Instagram, SMS) and uses locally hosted LLMs to analyze relationship health based on psychological frameworks (Gottman Method, Attachment Theory).
+## Quick Start (For Simple Use, Use the .bat Files!)
 
-**Key Features:**
-- File upload and parsing for common chat export formats
-- Phonetic text detection and normalization (handles Hinglish, Romanized scripts, etc.)
-- Psychological analysis with toxicity scores and affection levels
-- Professional dashboard visualizations
-- Complete local processing (no data leaves your machine)
+> **Why overcomplicate things for no reason?**  
+> IntimacyLens comes with 1-click batch files right in the root folder so you don't have to deal with multiple terminals, manual commands, or activating virtual environments.
 
-## Architecture
+### 1. First-Time Setup (Run Once)
+Double-click **`setup.bat`**
+* Automatically checks Python 3.10+ and Node.js 18+.
+* Configures the Python backend environment and installs dependencies.
+* Installs frontend packages and builds the optimized web app.
 
-### Backend (Python)
-- **Framework**: FastAPI
-- **Model Hosting**: Transformers + Accelerate for local GPU inference
-- **Model**: Qwen/Qwen2.5-7B-Instruct (default) or Mistral-7B-Instruct-v0.3
-- **LLM Engine**: Two-pass pipeline (Normalization → Psychological Analysis)
+### 2. Launching IntimacyLens (Everyday Use)
+Double-click **`start.bat`**
+* Automatically launches the FastAPI backend (`http://127.0.0.1:8001`).
+* Automatically launches the Next.js frontend (`http://localhost:3000`).
+* Runs real-time health checks and **opens your browser automatically** the moment services are ready.
+* Keeps a single, clean controller dashboard.
 
-### Frontend (Next.js)
-- **Framework**: Next.js 14+ (App Router)
-- **Styling**: Tailwind CSS + Shadcn UI
-- **Charts**: Recharts for visualizations
-- **Design**: Medical-grade aesthetic
+### 3. Clean Shutdown
+* Simply **press any key** inside the `start.bat` controller window, or double-click **`stop.bat`** to terminate all background servers cleanly.
 
-## Prerequisites
+---
 
-### Python Environment (Backend)
-- Python 3.10+
-- CUDA compatible GPU with 16GB+ VRAM (recommended)
-  - For CPU-only setup: Use smaller models (3B tokens)
-- Conda or virtual environment
+## Overview & Key Capabilities
 
-### Node.js Environment (Frontend)
-- Node.js 18+
-- npm 9+
+IntimacyLens allows you to upload raw text or JSON exports of your conversations (WhatsApp, Instagram, SMS) and analyzes communication health using validated psychological frameworks:
 
-## Installation
+* **Gottman Four Horsemen Telemetry:** Accurately detects and scores **Criticism**, **Contempt**, **Defensiveness**, and **Stonewalling**.
+* **Context-Aware Conflict De-escalation:** Evaluates genuine Gottman Repair Attempts only within active tension windows, avoiding false positives.
+* **Work-Hour Autonomy Protection:** Daytime response pauses (9:00 AM – 5:00 PM) are never penalized as apathy or emotional disconnection.
+* **Sarcasm & Insult Disambiguation:** Demeaning phrases ("Oh, poor baby... God, you're so useless") are identified as Contempt with heavy penalties, never misclassified as affection.
+* **Dual Blueprint Output:**
+  - **Healthy & Thriving Chats:** Routes to the *Relationship Vitality & Connection Blueprint* with proactive Gottman Sound Relationship House connection rituals.
+  - **Friction & Crisis Chats:** Routes to the *Relationship Repair Blueprint* with "The Brutal Truth" and structured de-escalation protocols.
+* **100% Local & Privacy-First:** All processing is done locally on your machine. Zero chat data leaves your device.
+
+---
+
+## Supported Chat Export Formats
+
+* **WhatsApp (Bracket format):**  
+  `[12/10/2023, 14:30:00] Alice: Hey, how are you?`
+* **WhatsApp (Dash & Unicode LTR format):**  
+  `12/10/2023, 2:30 PM - Bob: Stuck in a meeting, talk soon!`
+* **Instagram Direct Message Exports:**  
+  `Alice (12/10/2023, 18:00): Did you see this?`
+* **Plain Text SMS & Transcripts:**  
+  `Alice: Hello there!`
+* **JSON Chat Exports:**  
+  Array of objects containing `sender`/`author` and `text`/`message` keys.
+
+---
+
+## Advanced / Manual Developer Setup (CLI / Linux / macOS)
+
+If you are not on Windows or prefer running services manually via command line:
+
+### Prerequisites
+* Python 3.10+
+* Node.js 18+ & npm
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/IntimacyLens.git
-cd IntimacyLens
+git clone https://github.com/f0rsakeNiSd3ad/IntimateLens.git
+cd IntimateLens
 ```
 
-### 2. Setup Backend
+### 2. Manual Backend Setup
 ```bash
 cd backend
 
-# Create and activate virtual environment
+# Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+# On Windows:
+venv\Scripts\activate
+# On Linux/macOS:
+source venv/bin/activate
 
 # Install dependencies
-pip install -r requirements.txt
+pip install fastapi uvicorn pydantic python-multipart httpx
+
+# Start the backend server on port 8001
+uvicorn main:app --host 0.0.0.0 --port 8001 --reload
 ```
 
-**Install Local LLM Model:**
-The backend uses HuggingFace models via Transformers. Models are automatically downloaded on first run.
-
-### 3. Setup Frontend
+### 3. Manual Frontend Setup
 ```bash
 cd frontend
 
 # Install dependencies
 npm install
-```
 
-## Running the Application
-
-### 1-Click First-Time Setup & Start (Windows)
-1. **First-Time Setup:**
-   Double-click **`setup.bat`** to automatically verify environments, set up dependencies, and build the optimized app.
-2. **Launch Anytime:**
-   Double-click **`start.bat`** to start IntimacyLens. It will:
-   - Check and start the FastAPI backend on port `8001`
-   - Start the Next.js frontend on port `3000`
-   - Automatically open your default browser to `http://localhost:3000`
-   - Keep a clean, unified dashboard window (press any key to cleanly shut down all services)
-3. **Clean Shutdown:**
-   Double-click **`stop.bat`** anytime to instantly terminate all servers.
-
----
-
-### Option 1: Manual Local Setup (GPU Recommended)
-
-1. **Start the Backend**
-```bash
-cd backend
-
-# Check GPU availability
-python main.py --help
-
-# Start the API server
-uvicorn main:app --host 0.0.0.0 --port 8001 --reload
-
-# This will download the model on first run (may take 5-10 minutes)
-```
-
-2. **Start the Frontend**
-```bash
-cd frontend
-
-# In another terminal window
+# Start Next.js development server
 npm run dev
 ```
 
-3. **Access the Application**
-Open your browser and go to: `http://localhost:3000`
+### 4. Open in Browser
+Open `http://localhost:3000` in your web browser.
 
-### Option 2: Pre-downloaded Model
+---
 
-To avoid long model download times during development:
+## Running Verification Tests
 
-1. **Download the model once**
+To verify the deterministic psychological engine against all 14 clinical test scenarios (covering WhatsApp formats, Gottman metrics, work-hour autonomy, mutual exclusivity, and sarcasm detection):
+
 ```bash
-cd backend
-python -c "
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from huggingface_hub import snapshot_download
-import torch
-
-model_name = 'Qwen/Qwen2.5-7B-Instruct'
-print(f'Downloading {model_name}...')
-snapshot_download(repo_id=model_name, cache_dir='.cache')
-print('Model downloaded successfully!')
-"
+python backend/test_suite.py
 ```
 
-2. Continue with standard startup process above.
+---
 
-## File Formats Supported
+## Privacy & Security
 
-### WhatsApp Export
-- Format: `[DD/MM/YYYY, HH:MM:SS] Name: Message`
-- Also supports: `DD/MM/YYYY, HH:MM - Name: Message`
+* **Local Processing:** IntimacyLens runs completely on-device. No telemetry, chat logs, or personal metrics are transmitted to any cloud servers.
+* **No API Keys Required:** Operates deterministically without third-party LLM cloud subscriptions.
+* **Disclaimer:** IntimacyLens is an analytical self-reflection tool. It is not licensed psychological or psychiatric counsel.
 
-### Instagram Export
-- Format: `Name (Timestamp): Message`
-
-### SMS Export
-- Format: `Timestamp Name: Message`
-
-### Generic Plain Text
-- Format: `Name: Message`
-
-### JSON Format
-- Expected keys: `sender`, `text`, `timestamp`
-- Accepts various key names (`author`, `from`, `name`, `content`)
-
-## User Instructions
-
-**The User Instruction field significantly boosts accuracy for phonetic/slang text.**
-
-When uploading a conversation, provide helpful context about:
-- Language variations (e.g., "This conversation is in Hinglish, very slangy, and informal.")
-- Special abbreviations (e.g., "Contains many emojis and Romanized Hindi.")
-- Conversational style (e.g., "Very formal and academic tone.")
-
-## Analysis Output
-
-The dashboard displays:
-
-### Key Metrics
-- **Toxicity Score** (0-100): Overall relationship toxicity score
-- **Affection Levels** (0-100): Per-person affection assessment
-- **Gottman Four Horsemen**: Criticism, Contempt, Defensiveness, Stonewalling scores
-
-### Visualizations
-- **Toxicity Gauge**: Radial gauge showing toxicity level
-- **Affection Bars**: Comparative chart for Person A vs Person B
-- **Timeline Events**: Chronological view of major emotional spikes
-- **Gottman Breakdown**: Stacked bar chart of the four horsemen indicators
-
-### Analysis Categories
-- **Key Red Flags**: Identified problematic communication patterns
-- **Key Green Flags**: Identified healthy communication patterns
-- **Verdict**: One of "Repairable", "Critical", or "Recommend Ending"
-- **Actionable Advice**: Specific recommendations for relationship improvement
-
-### Normalized Conversation
-Cleaned, standard English version of the original chat export that preserves emotional tone and conversational flow.
-
-## Privacy Notice
-
-⚠️ **This analysis is generated by AI and should not be taken as professional psychological advice.** For serious relationship issues, consult a licensed therapist.
-
-- **All processing is local-only** - No data is sent to external servers
-- **Files are processed on your machine** - Uploaded content never leaves your device
-- **No cloud dependencies** - Complete offline functionality
-
-## Troubleshooting
-
-### Common Issues
-
-#### Model Download Issues
-If the model download fails:
-```bash
-# Clear cache and retry
-rm -rf ~/.cache/huggingface
-# Then restart the application
-```
-
-#### GPU Memory Issues
-If you encounter out-of-memory errors:
-- Reduce model size to `Qwen/Qwen2.5-3B-Instruct`
-- Or use CPU mode: `device_map="cpu"`
-
-#### CORS Issues
-If frontend cannot connect to backend:
-- Update `backend/main.py` to allow your frontend origin
-- Or use a reverse proxy to handle CORS
-
-### Docker Setup (Optional)
-
-For easier deployment, consider using Docker:
-
-```dockerfile
-FROM python:3.11-slim
-WORKDIR /app
-COPY backend/ .
-RUN pip install -r requirements.txt
-EXPOSE 8000
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
-```
-
-## Customization
-
-### Change Model
-Modify `backend/main.py` or `backend/prompt_engine.py`:
-```python
-model_name = "mistralai/Mistral-7B-Instruct-v0.3"
-```
-
-### Adjust Prompts
-Edit prompts in `backend/prompt_engine.py`:
-- `_build_translator_prompt()` for normalization
-- `_build_psychologist_prompt()` for analysis
-
-### Frontend Styling
-Modify `frontend/globals.css` for custom themes:
-- Add custom colors
-- Adjust spacing and layout
-
-## Performance Optimization
-
-### Model Quantization
-For better performance with smaller GPUs:
-```bash
-# Use 4-bit or 8-bit quantization
-pip install bitsandbytes
-```
-
-### Model Pruning
-Consider pruning large models for faster inference:
-- Start with 3B models for CPU-only setups
-- Use 7B models with quantization for good performance
-
-### Caching
-The LLM outputs are cached for repeated requests, improving response times for subsequent analyses.
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a pull request
+---
 
 ## License
 
