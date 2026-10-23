@@ -1,0 +1,10 @@
+fastapi>=0.104.0
+uvicorn>=0.24.0
+pydantic>=2.5.0
+python-multipart>=0.0.6
+transformers>=4.38.0
+accelerate>=0.26.0
+torch>=2.1.0
+bitsandbytes>=0.41.0; platform_system != "Windows" or python_version >= "3.10"
+jinja2>=3.1.2
+huggingface_hub>=0.20.0
